@@ -1,8 +1,4 @@
-import subprocess
-import pyautogui as pag
-import time
 import re
-import pyperclip
 import requests
 from Oauth2 import *
 
@@ -66,17 +62,6 @@ def get_single_tiktok_info(file_path):
     
     return url, description
 
-def open_file_and_copy(folder_path,tiktok_id):
-    if os.path.exists(folder_path):
-        print(f"Opening folder path: {folder_path}")
-        subprocess.run(['explorer', folder_path])
-    else:
-        print("Folder path not found!")
-    time.sleep(2)
-    pag.hotkey('ctrl', 'f')
-    pyperclip.copy(f"{tiktok_id}")
-    pag.hotkey('ctrl', 'v')
-    time.sleep(2)
 
 def delete(ten_file):
     try:
