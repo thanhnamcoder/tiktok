@@ -1,6 +1,7 @@
 import re
 import requests
 from Oauth2 import *
+import time
 
 input_folder_name = "_dun.hen16"
 file_path = f"/home/thanhnam/Desktop/Tiktok/videos/description/{input_folder_name}_description.txt"
@@ -122,29 +123,33 @@ def main():
     client = Client(oauth)
     webhook_url = 'https://discordapp.com/api/webhooks/1185107643145134090/5HgKD6JC_fpKRdFuHWOmESzcn4t7GRvbnEuTfqef4mQqJjEdj77xjncMPmy8ssiW-tiW'
 
-    folder_description_path = f"/home/thanhnam/Desktop/Tiktok/videos/description"
+    folder_description_path = f"videos/description"
     box_folder_id = "0"
     file_descreption_to_download = f"{input_folder_name}_description.txt"
-    folder_video_path = "/home/thanhnam/Desktop/Tiktok/videos/videos"
+    folder_video_path = "videos/videos"
 
     download_file_by_name(client, box_folder_id, file_descreption_to_download, folder_description_path)
     delete_file_by_name(client, box_folder_id, file_descreption_to_download)
 
-    tiktok_url, tiktok_description = get_single_tiktok_info(file_path)
-    tiktok_id = re.sub(r'.*?/(\d+)$', r'\1_effect', tiktok_url)
-    file_name_to_download = f"{tiktok_id}.mp4"
-    download_success = download_file_by_name(client, box_folder_id, file_name_to_download, folder_video_path)
+    while True:
+        tiktok_url, tiktok_description = get_single_tiktok_info(file_path)
+        tiktok_id = re.sub(r'.*?/(\d+)$', r'\1_effect', tiktok_url)
+        file_name_to_download = f"{tiktok_id}.mp4"
+        download_success = download_file_by_name(client, box_folder_id, file_name_to_download, folder_video_path)
 
-    if download_success:
-        print("Tải video thành công!")
-    else:
-        print("Không thể tải video.")
-    delete_file_by_name(client, box_folder_id, file_name_to_download)
-    delete(file_path)
-    file_path_up_to_discord = f"/home/thanhnam/Desktop/Tiktok/videos/videos/{file_name_to_download}"
-    print(file_path_up_to_discord)
-    response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url, tiktok_description)
-    print(response_text)
-    delete_file_in_folder(file_path_up_to_discord)
+        if download_success:
+            print("Tải video thành công!")
+        else:
+            print("Không thể tải video.")
+        delete_file_by_name(client, box_folder_id, file_name_to_download)
+        delete(file_path)
+        file_path_up_to_discord = f"videos/videos/{file_name_to_download}"
+        print(file_path_up_to_discord)
+        response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url, tiktok_description)
+        print(response_text)
+        delete_file_in_folder(file_path_up_to_discord)
+
+        # Chờ 5 giây trước khi thực hiện lại
+        time.sleep(5)
 if __name__ == "__main__":
     main()
