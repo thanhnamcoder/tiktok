@@ -4,7 +4,7 @@ from Oauth2 import *
 import time
 
 input_folder_name = "_dun.hen16"
-file_path = f"/home/thanhnam/Desktop/Tiktok/videos/description/{input_folder_name}_description.txt"
+file_path = f"videos/description/{input_folder_name}_description.txt"
 
 
 def download_file_by_name(client, folder_id, file_name, output_directory):
@@ -93,9 +93,9 @@ def send_message_with_file(webhook_url, file_path, url_tikok, description):
     # Mở file để đọc dữ liệu
     with open(file_path, 'rb') as file:
         file_data = file.read()
-    c = "_______________________________________"
+    
     # Tạo nội dung tin nhắn
-    message = f'{description}\n{c}\n{url_tikok}'
+    message = f'{description}\n\n{url_tikok}'
     
     # Tạo payload để gửi
     payload = {'content': message}
