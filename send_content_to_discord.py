@@ -150,6 +150,8 @@ def main():
     delete_file_by_name(client, box_folder_id, file_descreption_to_download)
 
     while True:
+        oauth = oauth2_process()
+        client = Client(oauth)
         tiktok_url, tiktok_description = get_single_tiktok_info(file_path)
         tiktok_id = re.sub(r'.*?/(\d+)$', r'\1_effect', tiktok_url)
         file_name_to_download = f"{tiktok_id}.mp4"
