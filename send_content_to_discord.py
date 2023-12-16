@@ -88,14 +88,32 @@ def delete(ten_file):
     except Exception as e:
         return f"Lỗi: {str(e)}"
     
-def send_message_with_file(webhook_url, file_path, url_tikok, description):
+def send_message(webhook_url, file_path, description):
 
     # Mở file để đọc dữ liệu
     with open(file_path, 'rb') as file:
         file_data = file.read()
     
     # Tạo nội dung tin nhắn
-    message = f'{description}\n\n{url_tikok}'
+    message = f'{description}'
+    
+    # Tạo payload để gửi
+    payload = {'content': message}
+    
+    
+    # Gửi yêu cầu POST với multipart/form-data
+    response = requests.post(webhook_url, data=payload)
+    
+    return response.text  
+    
+def send_message_with_file(webhook_url, file_path, url_tikok):
+
+    # Mở file để đọc dữ liệu
+    with open(file_path, 'rb') as file:
+        file_data = file.read()
+    
+    # Tạo nội dung tin nhắn
+    message = f'{url_tikok}'
     
     # Tạo payload để gửi
     payload = {'content': message}
@@ -145,6 +163,7 @@ def main():
         delete(file_path)
         file_path_up_to_discord = f"videos/videos/{file_name_to_download}"
         print(file_path_up_to_discord)
+        send_message(webhook_url, file_path_up_to_discord, tiktok_description)
         response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url, tiktok_description)
         print(response_text)
         delete_file_in_folder(file_path_up_to_discord)
