@@ -9,13 +9,17 @@ input_folder_name = "_dun.hen16"
 file_path = f"videos/description/{input_folder_name}_description.txt"
 
 def current_time_with_format():
-    # Lấy ngày tháng năm, giờ, phút, giây hiện tại
-    now = datetime.now()
+    # Lấy thời gian hiện tại ở múi giờ UTC
+    now_utc = datetime.utcnow()
 
-    # Định dạng đầu ra với năm đầy đủ (yyyy)
-    formatted_time = now.strftime("%d/%m/%Y %H:%M:%S")
+    # Chuyển đổi múi giờ từ UTC sang múi giờ Việt Nam (UTC+7)
+    vn_tz = pytz.timezone('Asia/Ho_Chi_Minh')
+    time_vietnam = pytz.utc.localize(now_utc).astimezone(vn_tz)
 
-    # Trả về thời gian hiện tại với định dạng mong muốn
+    # Định dạng thời gian với năm đầy đủ (yyyy)
+    formatted_time = time_vietnam.strftime("%d/%m/%Y %H:%M:%S")
+
+    # Trả về thời gian hiện tại ở múi giờ Việt Nam
     return formatted_time
 
 def download_file_by_name(client, folder_id, file_name, output_directory):
@@ -117,14 +121,14 @@ def send_message(webhook_url, file_path, description):
     
     return response.text  
     
-def send_message_with_file(webhook_url, file_path, url_tikok, time):
+def send_message_with_file(webhook_url, file_path, url_tikok, date_time):
 
     # Mở file để đọc dữ liệu
     with open(file_path, 'rb') as file:
         file_data = file.read()
     
     # Tạo nội dung tin nhắn
-    message = f'{time}\n{url_tikok}'
+    message = f'{date_time}\n{url_tikok}'
     
     # Tạo payload để gửi
     payload = {'content': message}
@@ -161,7 +165,7 @@ def main():
     delete_file_by_name(client, box_folder_id, file_descreption_to_download)
 
     while True:
-        time = current_time_with_format()
+        date_time = current_time_with_format()
         oauth = oauth2_process()
         client = Client(oauth)
         tiktok_url, tiktok_description = get_single_tiktok_info(file_path)
@@ -178,7 +182,7 @@ def main():
         file_path_up_to_discord = f"videos/videos/{file_name_to_download}"
         print(file_path_up_to_discord)
         send_message(webhook_url, file_path_up_to_discord, tiktok_description)
-        response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url, time)
+        response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url, date_time)
         print(response_text)
         delete_file_in_folder(file_path_up_to_discord)
 
