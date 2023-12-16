@@ -88,13 +88,13 @@ def delete(ten_file):
         return f"Lỗi: {str(e)}"
     
 def send_message_with_file(webhook_url, file_path, url_tikok, description):
-    c = "----------------------------------------"
+
     # Mở file để đọc dữ liệu
     with open(file_path, 'rb') as file:
         file_data = file.read()
     
     # Tạo nội dung tin nhắn
-    message = f'{c}\n{url_tikok}\n\n{description}'
+    message = f'{url_tikok}\n\n{description}'
     
     # Tạo payload để gửi
     payload = {'content': message}
