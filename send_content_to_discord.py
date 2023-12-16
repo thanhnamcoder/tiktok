@@ -164,7 +164,7 @@ def main():
         file_path_up_to_discord = f"videos/videos/{file_name_to_download}"
         print(file_path_up_to_discord)
         send_message(webhook_url, file_path_up_to_discord, tiktok_description)
-        response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url, tiktok_description)
+        response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url)
         print(response_text)
         delete_file_in_folder(file_path_up_to_discord)
 
