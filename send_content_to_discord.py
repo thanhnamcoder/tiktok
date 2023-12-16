@@ -150,6 +150,6 @@ def main():
         delete_file_in_folder(file_path_up_to_discord)
 
         # Chờ 5 giây trước khi thực hiện lại
-        time.sleep(5)
+        time.sleep(3600)
 if __name__ == "__main__":
     main()
