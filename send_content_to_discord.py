@@ -93,9 +93,9 @@ def send_message_with_file(webhook_url, file_path, url_tikok, description):
     # Mở file để đọc dữ liệu
     with open(file_path, 'rb') as file:
         file_data = file.read()
-    
+    c = "_______________________________________"
     # Tạo nội dung tin nhắn
-    message = f'{url_tikok}\n\n{description}'
+    message = f'{description}\n{c}\n{url_tikok}'
     
     # Tạo payload để gửi
     payload = {'content': message}
