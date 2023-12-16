@@ -17,7 +17,7 @@ def current_time_with_format():
     time_vietnam = pytz.utc.localize(now_utc).astimezone(vn_tz)
 
     # Định dạng thời gian với năm đầy đủ (yyyy)
-    formatted_time = time_vietnam.strftime("%d/%m/%Y %H:%M:%S")
+    formatted_time = time_vietnam.strftime("Time: %H:%M:%S\nDate: %d/%m/%Y ")
 
     # Trả về thời gian hiện tại ở múi giờ Việt Nam
     return formatted_time
