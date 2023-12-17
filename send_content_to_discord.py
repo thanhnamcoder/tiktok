@@ -20,7 +20,7 @@ async def on_ready():
     print('Bot đã kết nối thành công!')
     oauth = oauth2_process()
     client = Client(oauth)
-    webhook_url = 'https://discordapp.com/api/webhooks/1185107643145134090/5HgKD6JC_fpKRdFuHWOmESzcn4t7GRvbnEuTfqef4mQqJjEdj77xjncMPmy8ssiW-tiW'
+    webhook_url = 'https://discordapp.com/api/webhooks/1185876707043983493/kEyLEsJPHzyEyplAk3Z9ikEfqRO5N2HwaPE0fiBNqiWArwpNlk81LwGYbno22lF3dYVx'
 
     folder_description_path = f"videos/description"
     box_folder_id = "0"
@@ -50,7 +50,7 @@ async def on_ready():
     response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url, date_time)
     # print(response_text)
     delete_file_in_folder(file_path_up_to_discord)
-    print("Gửi tin nhắn thành côngg")
+    print("Gửi tin nhắn thành công")
 
 
 @client.event
@@ -87,7 +87,7 @@ async def send_loop_message():
         response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url, date_time)
         # print(response_text)
         delete_file_in_folder(file_path_up_to_discord)
-        print("Gửi tin nhắn thành côngg")
+        print("Gửi tin nhắn thành công")
     
 @client.event
 async def on_ready():
@@ -96,4 +96,4 @@ async def on_ready():
     send_loop_message.start()
 
 # Thay YOUR_BOT_TOKEN bằng token của bot Discord của bạn
-client.run('MTE4NTgyMzM5NTk1OTUzNzcxNg.Gbr0JR.roJG50T3hEu_ANXAYsewDLC8rrWDFoaeywN5IQ')
+client.run('MTE4NTgyMzM5NTk1OTUzNzcxNg.GvCRA_._b7jqod8MJ19K7NzRxNFdemlfm5Ht2gupwuVDQ')

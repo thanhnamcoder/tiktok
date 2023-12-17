@@ -33,7 +33,7 @@ def oauth2_process():
     if saved_access_token and saved_refresh_token:
         oauth = OAuth2(
             client_id='lj0iuv31t35gm3id4rsvewaa7wfy83sd',
-            client_secret='Sl5CXKhRrDtzHYPliOyeFBpcTEndP3Ex',
+            client_secret='JpH5pdqfce1V0g8LP42rwHdcuinPxLg0',
             access_token=saved_access_token,
             refresh_token=saved_refresh_token,
             store_tokens=store_tokens_to_file,
@@ -42,7 +42,7 @@ def oauth2_process():
         # Nếu không có tokens, yêu cầu xác thực từ người dùng
         oauth = OAuth2(
             client_id='lj0iuv31t35gm3id4rsvewaa7wfy83sd',
-            client_secret='Sl5CXKhRrDtzHYPliOyeFBpcTEndP3Ex',
+            client_secret='JpH5pdqfce1V0g8LP42rwHdcuinPxLg0',
             store_tokens=store_tokens_to_file,
         )
 
