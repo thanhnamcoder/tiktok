@@ -3,6 +3,14 @@ import os
 import requests
 from datetime import datetime
 import pytz
+import json
+
+# Đọc dữ liệu từ tệp JSON
+with open('config.json', 'r') as config_file:
+    config = json.load(config_file)
+    
+# Lấy token từ dữ liệu cấu hình
+box_client_secret = config.get('box_client_secret')
 
 
 saved_access_token = None
@@ -33,7 +41,7 @@ def oauth2_process():
     if saved_access_token and saved_refresh_token:
         oauth = OAuth2(
             client_id='lj0iuv31t35gm3id4rsvewaa7wfy83sd',
-            client_secret='JpH5pdqfce1V0g8LP42rwHdcuinPxLg0',
+            client_secret=box_client_secret,
             access_token=saved_access_token,
             refresh_token=saved_refresh_token,
             store_tokens=store_tokens_to_file,
@@ -42,7 +50,7 @@ def oauth2_process():
         # Nếu không có tokens, yêu cầu xác thực từ người dùng
         oauth = OAuth2(
             client_id='lj0iuv31t35gm3id4rsvewaa7wfy83sd',
-            client_secret='JpH5pdqfce1V0g8LP42rwHdcuinPxLg0',
+            client_secret=box_client_secret,
             store_tokens=store_tokens_to_file,
         )
 

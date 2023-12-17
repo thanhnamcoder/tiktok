@@ -1,7 +1,13 @@
 import discord
 from discord.ext import tasks
+import asyncio
 from Oauth2 import *
 import re
+import json
+
+with open('config.json', 'r') as config_file:
+    config = json.load(config_file)
+
 
 input_folder_name = "_dun.hen16"
 file_path = f"videos/description/{input_folder_name}_description.txt"
@@ -64,8 +70,8 @@ async def on_message(message):
         
         
 
-
-@tasks.loop(seconds=60)
+remaining = 70
+@tasks.loop(seconds=remaining)
 async def send_loop_message():
         date_time = current_time_with_format()
         oauth = oauth2_process()
@@ -88,6 +94,11 @@ async def send_loop_message():
         # print(response_text)
         delete_file_in_folder(file_path_up_to_discord)
         print("Gửi tin nhắn thành công")
+        for remaining_seconds in range(remaining, 0, -1):
+            print(f"Đang chạy lại sau {remaining_seconds} giây...")
+            await asyncio.sleep(1)
+    
+
     
 @client.event
 async def on_ready():
@@ -96,4 +107,6 @@ async def on_ready():
     send_loop_message.start()
 
 # Thay YOUR_BOT_TOKEN bằng token của bot Discord của bạn
-client.run('MTE4NTgyMzM5NTk1OTUzNzcxNg.GvCRA_._b7jqod8MJ19K7NzRxNFdemlfm5Ht2gupwuVDQ')
+token_discord = config.get('discord_token')
+client.run(token_discord)
+
