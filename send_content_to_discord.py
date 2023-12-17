@@ -50,7 +50,7 @@ async def on_ready():
     response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url, date_time)
     # print(response_text)
     delete_file_in_folder(file_path_up_to_discord)
-    print("Gửi tin nhắn thành công")
+    print("Gửi tin nhắn thành côngg")
 
 
 @client.event
@@ -87,7 +87,7 @@ async def send_loop_message():
         response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url, date_time)
         # print(response_text)
         delete_file_in_folder(file_path_up_to_discord)
-        print("Gửi tin nhắn thành công")
+        print("Gửi tin nhắn thành côngg")
     
 @client.event
 async def on_ready():
