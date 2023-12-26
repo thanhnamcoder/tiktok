@@ -11,6 +11,8 @@ with open('config.json', 'r') as config_file:
     config = json.load(config_file)
 
 input_folder_name = "hanhhtrann99"
+file_descreption_to_download = f"{input_folder_name}_description.txt"
+folder_description_path = f"videos/description"
 file_path = f"videos/description/{input_folder_name}_description.txt"
 box_folder_id = "0"
 folder_video_path = "videos/videos"
@@ -90,7 +92,12 @@ async def send_loop_message():
     
 @bot.event
 async def on_ready():
+    oauth = oauth2_process()
+    client = Client(oauth)
+    
     print("Bot is ready!")
+    download_file_by_name(client, box_folder_id, file_descreption_to_download, folder_description_path)
+
     send_loop_message.start()
     
 
