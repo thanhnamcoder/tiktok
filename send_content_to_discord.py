@@ -5,6 +5,7 @@ from Oauth2 import *
 import re
 import json
 from discord.ext import commands
+import time
 
 
 with open('config.json', 'r') as config_file:
@@ -29,37 +30,69 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or('^'), intents=inten
 
 stop_loop = False  # Biến để kiểm soát việc dừng loop
 loop_is_running = False  # Biến để kiểm tra xem loop có đang chạy không
-date_time = current_time_with_format()
+remine_time = 600
+
 
 @bot.event
 async def on_message(message):
     global stop_loop, loop_is_running, send_loop_message
 
-    # Kiểm tra xem tin nhắn được gửi có phải từ bot không
     if message.author == bot.user:
         return
 
     if message.content == 'Start':
-        await message.channel.send(f'{date_time}')
+
+        # Khóa phòng chat
+        overwrites = {
+            message.guild.default_role: discord.PermissionOverwrite(send_messages=False),
+            message.author: discord.PermissionOverwrite(send_messages=False),
+            bot.user: discord.PermissionOverwrite(send_messages=True)
+        }
+        await message.channel.edit(overwrites=overwrites)
+
         stop_loop = False
         if not loop_is_running:
-            send_loop_message.start()  # Khởi động loop nếu nó đã dừng
             loop_is_running = True
             print("Start Success")
+            await message.channel.send("Đang chuẩn bị content!")
 
-        # Xóa tin nhắn người dùng sau khi nhập lệnh "Start"
-        await message.delete()
-
-
+            # Gửi tin nhắn bắt đầu loop và chờ send_loop_message.start() hoàn thành
             
-            
+            # Chờ send_loop_message.start() hoàn thành
+            send_loop_message.start()
+            await asyncio.sleep(2)  # Chờ 2 giây
 
+            # Gửi tin nhắn thông báo sau khi start loop
+            notification_msg = await message.channel.send(f"Deleting messages in {remine_time} seconds...")
+
+            # Đếm ngược từ 10 xuống 0 và gửi tin nhắn cập nhật
+            for i in range(remine_time, -1, -1):
+                try:
+                    await notification_msg.edit(content=f"Deleting messages in {i} seconds...")
+                    await asyncio.sleep(1)
+                except discord.NotFound:
+                    pass
+
+            # Xóa tin nhắn thông báo cuối cùng
+            try:
+                await notification_msg.delete()
+            except discord.NotFound:
+                pass
+
+            # Xóa tin nhắn trong kênh
+            async for msg in message.channel.history(limit=None):
+                try:
+                    retrieved_msg = await message.channel.fetch_message(msg.id)
+                    await retrieved_msg.delete()
+                except discord.NotFound:
+                    pass
+
+            loop_is_running = False
 
 
         
-        
 
-remaining = 5
+remaining = 0
 @tasks.loop(seconds=remaining)
 async def send_loop_message():
     global loop_is_running
@@ -109,9 +142,6 @@ async def on_ready():
     download_file_by_name(client, box_folder_id, file_descreption_to_download, folder_description_path)
     delete_file_by_name(client, box_folder_id, file_descreption_to_download)
     send_loop_message.start()
-        # Gửi tin nhắn khi hoàn thành khởi chạy hàm send_loop_message
-    channel = bot.get_channel(1185824039218974763)  # Thay YOUR_CHANNEL_ID bằng ID của kênh muốn gửi tin nhắn
-    await channel.send("===============DONE===============")
     
 
 # Thay YOUR_BOT_TOKEN bằng token của bot Discord của bạn
