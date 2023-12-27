@@ -175,14 +175,14 @@ def send_message(webhook_url, file_path, description):
     
     return response.text  
     
-def send_message_with_file(webhook_url, file_path, url_tikok, date_time):
+def send_message_with_file(webhook_url, file_path, url_tikok):
 
     # Mở file để đọc dữ liệu
     with open(file_path, 'rb') as file:
         file_data = file.read()
     
     # Tạo nội dung tin nhắn
-    message = f'{date_time}\n{url_tikok}'
+    message = f'{url_tikok}'
     
     # Tạo payload để gửi
     payload = {'content': message}
