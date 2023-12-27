@@ -16,7 +16,7 @@ folder_description_path = f"videos/description"
 file_path = f"videos/description/{input_folder_name}_description.txt"
 box_folder_id = "0"
 folder_video_path = "videos/videos"
-webhook_url = 'https://discordapp.com/api/webhooks/1185876707043983493/kEyLEsJPHzyEyplAk3Z9ikEfqRO5N2HwaPE0fiBNqiWArwpNlk81LwGYbno22lF3dYVx'
+webhook_url = 'https://discordapp.com/api/webhooks/1186950849537249361/jEFMfjsioLRm8cIVLBnCuJcPJWepjlXWsqwPCGy131wWq2nQ-6GsO_WR6zcysL2ghvtr'
 
 intents = discord.Intents.default()
 intents.messages = True
