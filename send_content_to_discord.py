@@ -11,7 +11,7 @@ import time
 with open('config.json', 'r') as config_file:
     config = json.load(config_file)
 
-input_folder_name = "hanhhtrann99"
+input_folder_name = "ntkh.03"
 file_descreption_to_download = f"{input_folder_name}_description.txt"
 folder_description_path = f"videos/description"
 file_path = f"videos/description/{input_folder_name}_description.txt"
@@ -30,7 +30,7 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or('^'), intents=inten
 
 stop_loop = False  # Biến để kiểm soát việc dừng loop
 loop_is_running = False  # Biến để kiểm tra xem loop có đang chạy không
-remine_time = 600
+remine_time = 60
 
 
 @bot.event
