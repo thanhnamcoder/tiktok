@@ -207,16 +207,3 @@ def delete_file_in_folder(file_path):
 
 
 
-def current_time_with_format():
-    # Lấy thời gian hiện tại ở múi giờ UTC
-    now_utc = datetime.utcnow()
-
-    # Chuyển đổi múi giờ từ UTC sang múi giờ Việt Nam (UTC+7)
-    vn_tz = pytz.timezone('Asia/Ho_Chi_Minh')
-    time_vietnam = pytz.utc.localize(now_utc).astimezone(vn_tz)
-
-    # Định dạng thời gian với năm đầy đủ (yyyy)
-    formatted_time = time_vietnam.strftime("Time: %H:%M:%S\nDate: %d/%m/%Y ")
-
-    # Trả về thời gian hiện tại ở múi giờ Việt Nam
-    return formatted_time

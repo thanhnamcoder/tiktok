@@ -11,7 +11,7 @@ import time
 with open('config.json', 'r') as config_file:
     config = json.load(config_file)
 
-input_folder_name = "ntkh.03"
+input_folder_name = "ugckieulinh"
 file_descreption_to_download = f"{input_folder_name}_description.txt"
 folder_description_path = f"videos/description"
 file_path = f"videos/description/{input_folder_name}_description.txt"
@@ -30,8 +30,16 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or('^'), intents=inten
 
 stop_loop = False  # Biến để kiểm soát việc dừng loop
 loop_is_running = False  # Biến để kiểm tra xem loop có đang chạy không
-remine_time = 60
+remine_time = 50
 
+
+async def delete_messages_in_channel(channel):
+    async for msg in channel.history(limit=None):
+        try:
+            retrieved_msg = await channel.fetch_message(msg.id)
+            await retrieved_msg.delete()
+        except discord.NotFound:
+            pass
 
 @bot.event
 async def on_message(message):
@@ -54,8 +62,6 @@ async def on_message(message):
         if not loop_is_running:
             loop_is_running = True
             print("Start Success")
-            await message.channel.send("Đang chuẩn bị content!")
-
             # Gửi tin nhắn bắt đầu loop và chờ send_loop_message.start() hoàn thành
             
             # Chờ send_loop_message.start() hoàn thành
@@ -73,27 +79,36 @@ async def on_message(message):
                 except discord.NotFound:
                     pass
 
-            # Xóa tin nhắn thông báo cuối cùng
-            try:
-                await notification_msg.delete()
-            except discord.NotFound:
-                pass
-
-            # Xóa tin nhắn trong kênh
-            async for msg in message.channel.history(limit=None):
+            # Xóa tin nhắn thông báo cuối cùng nếu vòng lặp đã hoàn thành
+            if not stop_loop:
                 try:
-                    retrieved_msg = await message.channel.fetch_message(msg.id)
-                    await retrieved_msg.delete()
+                    await notification_msg.delete()
                 except discord.NotFound:
                     pass
 
+            # Xóa tin nhắn trong kênh
+            await delete_messages_in_channel(message.channel)
+
             loop_is_running = False
+
+    elif message.content == 'Delete':
+        # Kiểm tra quyền hạn của người gửi tin nhắn
+        if message.author.guild_permissions.manage_messages:
+            # Gọi hàm để xóa toàn bộ tin nhắn trong kênh
+            await delete_messages_in_channel(message.channel)
+            print("Deleted all messages in the channel.")
+        else:
+            await message.channel.send("You don't have permission to use this command.")
+
+    await bot.process_commands(message)
+
+
+
 
 
         
 
-remaining = 0
-@tasks.loop(seconds=remaining)
+@tasks.loop()
 async def send_loop_message():
     global loop_is_running
 
@@ -111,6 +126,7 @@ async def send_loop_message():
 
     if download_success:
         print("Tải video thành công!")
+        time.sleep(2)
     else:
         print("Không thể tải video.")
     delete_file_by_name(client, box_folder_id, file_name_to_download)
@@ -118,13 +134,12 @@ async def send_loop_message():
     file_path_up_to_discord = f"videos/videos/{file_name_to_download}"
     
     send_message(webhook_url, file_path_up_to_discord, tiktok_description)
+    time.sleep(1)
     response_text = send_message_with_file(webhook_url, file_path_up_to_discord, tiktok_url)
     delete_file_in_folder(file_path_up_to_discord)
     print("Gửi tin nhắn thành công")
 
-    for remaining_seconds in range(remaining, 0, -1):
-        print(f"Đang chạy lại sau {remaining_seconds} giây...")
-        await asyncio.sleep(1)
+
 
     # Tắt vòng lặp khi hoàn thành gửi tin nhắn thành công
     send_loop_message.stop()
