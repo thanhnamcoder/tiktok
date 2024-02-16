@@ -11,6 +11,7 @@ with open('config.json', 'r') as config_file:
     
 # Lấy token từ dữ liệu cấu hình
 box_client_secret = config.get('box_client_secret')
+discord_token = config.get('discord_token')
 
 
 saved_access_token = None
@@ -209,7 +210,7 @@ def delete_file_in_folder(file_path):
 
 def delete_messages_in_channel():
     channel_id = "1186950282849042513"
-    bot_token = "MTE4OTE3NjA0MDUxNDM5MjA5NQ.GkeizV.kop_NHNCxdp_bSUFlt3sz6-bmvVycCzz8BmR2s"
+    bot_token = discord_token
     url = f"https://discord.com/api/v9/channels/{channel_id}/messages"
     headers = {
         "Authorization": f"Bot {bot_token}"
