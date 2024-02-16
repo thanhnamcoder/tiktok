@@ -207,3 +207,27 @@ def delete_file_in_folder(file_path):
 
 
 
+def delete_messages_in_channel():
+    channel_id = "1186950282849042513"
+    bot_token = "MTE4OTE3NjA0MDUxNDM5MjA5NQ.GkeizV.kop_NHNCxdp_bSUFlt3sz6-bmvVycCzz8BmR2s"
+    url = f"https://discord.com/api/v9/channels/{channel_id}/messages"
+    headers = {
+        "Authorization": f"Bot {bot_token}"
+    }
+
+    # Lấy danh sách tin nhắn trong kênh
+    response = requests.get(url, headers=headers)
+    messages = response.json()
+
+    # Xóa từng tin nhắn trong kênh
+    for message in messages:
+        message_id = message['id']
+        delete_url = f"https://discord.com/api/v9/channels/{channel_id}/messages/{message_id}"
+        delete_response = requests.delete(delete_url, headers=headers)
+        if delete_response.status_code == 204:
+            print(f"Đã xóa tin nhắn có ID {message_id}")
+        else:
+            print(f"Không thể xóa tin nhắn có ID {message_id}. Mã lỗi:", delete_response.status_code)
+
+
+
