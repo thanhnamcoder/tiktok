@@ -2,16 +2,8 @@ from boxsdk import Client, OAuth2
 import os
 import requests
 from datetime import datetime
-import pytz
-import json
+from database import get_token
 
-# Đọc dữ liệu từ tệp JSON
-with open('config.json', 'r') as config_file:
-    config = json.load(config_file)
-    
-# Lấy token từ dữ liệu cấu hình
-box_client_secret = config.get('box_client_secret')
-discord_token = config.get('discord_token')
 
 
 saved_access_token = None
@@ -35,6 +27,7 @@ def store_tokens_to_file(access_token, refresh_token):
 def oauth2_process():
     global saved_access_token
     global saved_refresh_token
+    box_client_secret = get_token("box")
 
     load_tokens_from_file()
 
@@ -210,7 +203,7 @@ def delete_file_in_folder(file_path):
 
 def delete_messages_in_channel():
     channel_id = "1186950282849042513"
-    bot_token = discord_token
+    bot_token = get_token("discord")
     url = f"https://discord.com/api/v9/channels/{channel_id}/messages"
     headers = {
         "Authorization": f"Bot {bot_token}"
