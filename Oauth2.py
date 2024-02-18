@@ -1,10 +1,7 @@
 from boxsdk import Client, OAuth2
 import os
 import requests
-from datetime import datetime
 from database import get_token
-
-
 
 saved_access_token = None
 saved_refresh_token = None
@@ -57,18 +54,7 @@ def oauth2_process():
 
         access_token, refresh_token = oauth.authenticate(code)
         store_tokens_to_file(access_token, refresh_token)
-
     return oauth
-
-
-
-
-
-
-
-
-
-
 
 def download_file_by_name(client, folder_id, file_name, output_directory):
     if not os.path.exists(output_directory):
@@ -104,102 +90,6 @@ def delete_file_by_name(client, folder_id, file_name):
             except Exception as e:
                 print(f"Error deleting {file_name}: {e}")
                 return False
-
-def get_single_tiktok_info(file_path):
-    url = ''
-    description = ''
-
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            lines = file.readlines()
-
-            for line in lines:
-                line = line.strip()
-                if line.startswith('URL TikTok:'):
-                    url = line.replace('URL TikTok: ', '')
-                elif line.startswith('Description:'):
-                    description = line.replace('Description: ', '')
-                    break  # Dừng sau khi đã tìm thấy một cặp URL và mô tả
-
-    except Exception as e:
-        print(f"An error occurred while reading the file: {str(e)}")
-    
-    return url, description
-
-
-def delete(ten_file):
-    try:
-        deleted_content = []  # Initialize a list to store deleted content
-        with open(ten_file, 'r', encoding='utf-8') as file:
-            lines = file.readlines()
-
-            # Store the content to be deleted
-            deleted_content = lines[:3]
-
-        with open(ten_file, 'w', encoding='utf-8') as file:
-            for index, line in enumerate(lines):
-                if index < 3:
-                    continue
-                file.write(line)
-
-        # Construct URL and description of deleted content
-        deleted_description = ''.join(deleted_content)
-        return f"\nĐã xóa:\n{deleted_description}"
-    
-    except FileNotFoundError:
-        return "File không tồn tại"
-    except Exception as e:
-        return f"Lỗi: {str(e)}"
-    
-def send_message(webhook_url, file_path, description):
-
-    # Mở file để đọc dữ liệu
-    with open(file_path, 'rb') as file:
-        file_data = file.read()
-    
-    # Tạo nội dung tin nhắn
-    message = f'{description}'
-    
-    # Tạo payload để gửi
-    payload = {'content': message}
-    
-    
-    # Gửi yêu cầu POST với multipart/form-data
-    response = requests.post(webhook_url, data=payload)
-    
-    return response.text  
-    
-def send_message_with_file(webhook_url, file_path, url_tikok):
-
-    # Mở file để đọc dữ liệu
-    with open(file_path, 'rb') as file:
-        file_data = file.read()
-    
-    # Tạo nội dung tin nhắn
-    message = f'{url_tikok}'
-    
-    # Tạo payload để gửi
-    payload = {'content': message}
-    
-    # Thêm file vào payload với key là 'file' và giá trị là dữ liệu của file
-    files = {'file': (file_path, file_data)}
-    
-    # Gửi yêu cầu POST với multipart/form-data
-    response = requests.post(webhook_url, data=payload, files=files)
-    
-    return response.text
-
-def delete_file_in_folder(file_path):
-    try:
-        if os.path.exists(file_path):
-            os.remove(file_path)
-            # print(f"Đã xóa tệp {file_path} thành công")
-        else:
-            print(f"Tệp {file_path} không tồn tại")
-    except Exception as e:
-        print(f"Lỗi: {str(e)} khi xóa tệp {file_path}")
-
-
 
 def delete_messages_in_channel():
     channel_id = "1186950282849042513"
