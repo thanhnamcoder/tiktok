@@ -95,6 +95,6 @@ def send_discord_webhook(webhook_url):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
 
 #scp -r "D:\Project\tiktok" automation@52.249.223.231:/home/automation
