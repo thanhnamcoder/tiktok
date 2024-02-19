@@ -77,7 +77,6 @@ def send_discord_webhook(webhook_url):
         return False
 
 if __name__ == '__main__':
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port="8000")
+    app.run()
 
 #scp -r "D:\Project\tiktok" automation@52.249.223.231:/home/automation
